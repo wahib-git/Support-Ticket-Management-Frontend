@@ -1,0 +1,179 @@
+/* Global styles for the support ticket system */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+@import 'ngx-toastr/toastr';
+
+:root {
+  --primary-color: #3f51b5;
+  --secondary-color: #ff4081;
+  --admin-color: #5c6bc0;
+  --agent-color: #26a69a;
+  --teacher-color: #78909c;
+  --success-color: #4caf50;
+  --warning-color: #ff9800;
+  --danger-color: #f44336;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e0e0e0;
+  --dark-gray: #757575;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.page-container {
+  padding: 1.5rem;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-item {
+  border-left: 4px solid var(--medium-gray);
+  transition: all 0.2s ease;
+}
+
+.ticket-item.priority-urgent {
+  border-left-color: var(--danger-color);
+}
+
+.ticket-item.priority-important {
+  border-left-color: var(--warning-color);
+}
+
+.ticket-item.priority-minor {
+  border-left-color: var(--secondary-color);
+}
+
+.ticket-item.status-open {
+  background-color: rgba(244, 67, 54, 0.05);
+}
+
+.ticket-item.status-in_progress {
+  background-color: rgba(255, 152, 0, 0.05);
+}
+
+.ticket-item.status-resolved {
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.ticket-item.status-closed {
+  background-color: rgba(158, 158, 158, 0.05);
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.open {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--danger-color);
+}
+
+.status-badge.in_progress {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: var(--warning-color);
+}
+
+.status-badge.resolved {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--success-color);
+}
+
+.status-badge.closed {
+  background-color: rgba(158, 158, 158, 0.1);
+  color: var(--dark-gray);
+}
+
+.sidebar {
+  background-color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  min-height: 100vh;
+}
+
+.nav-link {
+  color: var(--dark-gray);
+  transition: color 0.2s ease;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+  background-color: rgba(63, 81, 181, 0.05);
+}
+
+.nav-link.active {
+  color: var(--primary-color);
+  background-color: rgba(63, 81, 181, 0.1);
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #303f9f;
+  border-color: #303f9f;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border-left-color: var(--primary-color);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.dashboard-stat-card {
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.dashboard-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-image {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.auth-container {
+  max-width: 400px;
+  margin: 5rem auto;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+}
