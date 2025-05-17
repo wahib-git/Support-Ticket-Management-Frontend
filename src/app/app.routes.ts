@@ -76,6 +76,10 @@ export const routes: Routes = [
         path: 'tickets/create',
         loadComponent: () => import('./features/teacher/ticket-form/ticket-form.component').then(m => m.TicketFormComponent)
       },
+      { 
+        path: 'tickets/edit/:id',
+        loadComponent: () => import('./features/teacher/ticket-form/ticket-form.component').then(m => m.TicketFormComponent)
+      },
       {
         path: '',
         redirectTo: 'tickets',
