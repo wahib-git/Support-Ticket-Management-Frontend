@@ -5,7 +5,6 @@ import { TicketService } from '../../../core/services/ticket.service';
 import { UserService } from '../../../core/services/user.service';
 import { CategoryStat, PriorityStat, TicketStats } from '../../../core/models/ticket.model';
 import { ToastrService } from 'ngx-toastr';
-import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 import { NgChartsModule } from 'ng2-charts';
 
 @Component({
@@ -14,18 +13,13 @@ import { NgChartsModule } from 'ng2-charts';
   imports: [
     CommonModule,
     RouterModule,
-    LoadingSpinnerComponent,
     NgChartsModule
   ],
   template: `
     <div class="row">
       <div class="col-12">
         <h2 class="mb-4">Tableau de bord</h2>
-        
-        <div *ngIf="isLoading" class="text-center py-5">
-          <app-loading-spinner></app-loading-spinner>
-          <p>Spinner is active</p> <!-- Log visuel -->
-        </div>
+      
         
         <div *ngIf="!isLoading">
           <!-- Stats Overview -->
@@ -67,8 +61,8 @@ import { NgChartsModule } from 'ng2-charts';
                   </div>
                   <div *ngIf="stats?.ticketsByCategory?.length !== 0" class="chart-container" style="height: 300px;">
                     <canvas baseChart
-                      [datasets]="[{data: getCategoryData(), label: 'Tickets'}]"
-                      [labels]="getCategoryLabels()"
+                      [datasets]="[{data: categoryData, label: 'Tickets'}]"
+                      [labels]="categoryLabels"
                       [options]="{responsive: true}"
                       [legend]="true"
                       type="doughnut">
@@ -87,8 +81,8 @@ import { NgChartsModule } from 'ng2-charts';
                   </div>
                   <div *ngIf="stats?.ticketsByPriority?.length !== 0" class="chart-container" style="height: 300px;">
                     <canvas baseChart
-                      [datasets]="[{data: getPriorityData(), label: 'Tickets'}]"
-                      [labels]="getPriorityLabels()"
+                      [datasets]="[{data:priorityData, label: 'Tickets'}]"
+                      [labels]="priorityLabels"
                       [options]="{responsive: true}"
                       [legend]="true"
                       type="doughnut">
@@ -141,6 +135,10 @@ import { NgChartsModule } from 'ng2-charts';
 export class DashboardComponent implements OnInit {
   stats: TicketStats | null = null;
   isLoading = false;
+  categoryLabels: string[] = [];
+  categoryData: number[] = [];
+  priorityLabels: string[] = [];
+  priorityData: number[] = [];
 
   constructor(
     private ticketService: TicketService,
@@ -154,10 +152,9 @@ export class DashboardComponent implements OnInit {
   }
 
   loadStats(): void {
+    console.log('Dashboard loadStats called');
     this.isLoading = true;
-    console.log('Spinner activated: isLoading =', this.isLoading);
-    setTimeout(() => {
-      this.ticketService.getTicketStats().subscribe({
+    this.ticketService.getTicketStats().subscribe({
         next: (response: { categoryStats: CategoryStat[]; priorityStats: PriorityStat[]; stats: any[]; topAgent: any }) => {
           // Mapper les données de la réponse
           this.stats = {
@@ -176,29 +173,21 @@ export class DashboardComponent implements OnInit {
             })),
             topAgents: response.topAgent || []
           };
+  
           console.log('Stats loaded:', this.stats);
           this.toastr.success('Statistiques chargées avec succès');
+          // ...après avoir reçu les données
+          this.categoryLabels = this.stats.ticketsByCategory.map(item => item.category);
+          this.categoryData = this.stats.ticketsByCategory.map(item => item.count);
+          this.priorityLabels = this.stats.ticketsByPriority.map(item => item.priority);
+          this.priorityData = this.stats.ticketsByPriority.map(item => item.count);
           this.isLoading = false;
         },
         error: (error) => {
           this.toastr.error('Error loading stats:', error);
           this.isLoading = false;
-          console.log('Spinner deactivated: isLoading =', this.isLoading);
         }
       });
-    }, 4000); // Simulate a 4-second delay
   }
   
-  getCategoryLabels(): string[] {
-    return this.stats?.ticketsByCategory?.map(item => item.category) || [];
-  }
-  getCategoryData(): number[] {
-    return this.stats?.ticketsByCategory?.map(item => item.count) || [];
-  }
-  getPriorityLabels(): string[] { 
-    return this.stats?.ticketsByPriority?.map(item => item.priority) || [];
-  }
-  getPriorityData(): number[] {
-    return this.stats?.ticketsByPriority?.map(item => item.count) || [];
-  }
 }
