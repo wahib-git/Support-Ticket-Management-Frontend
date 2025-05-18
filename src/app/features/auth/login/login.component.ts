@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { LoadingSpinnerComponent } from '../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +12,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    LoadingSpinnerComponent
+    
   ],
   template: `
     <div class="container">
@@ -52,10 +51,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
                 </div>
               </div>
               
-              <div *ngIf="isLoading" class="text-center">
-                <app-loading-spinner size="sm"></app-loading-spinner>
-              </div>
-              
+             
               <button 
                 type="submit" 
                 class="btn btn-primary w-100 mb-3"
