@@ -76,7 +76,7 @@ import { ToastrService } from 'ngx-toastr';
                   (change)="onRoleChange()"
                 >
                   <option value="">Sélectionner un rôle</option>
-                  <option value="enseignant">Interlocuteur</option>
+                  <option value="interlocuteur">Interlocuteur</option>
                   <option value="agent">Agent de support</option>
                 </select>
                 <div *ngIf="submitted && f['role'].errors" class="invalid-feedback">
@@ -102,6 +102,23 @@ import { ToastrService } from 'ngx-toastr';
                 </div>
               </div>
               
+              <div class="mb-4" *ngIf="isInterlocuteurRole()">
+                <label for="userProfile" class="form-label">Profile</label>
+                <select
+                  id="userProfile"
+                  formControlName="userProfile"
+                  class="form-select"
+                  [ngClass]="{'is-invalid': submitted && f['userProfile'].errors}"
+                >
+                  <option value="">Sélectionner un profile </option>
+                  <option value="enseignant">Enseignant</option>
+                  <option value="etudient">Etudient</option>
+                  <option value="personnel">Personnel</option>
+                </select>
+                <div *ngIf="submitted && f['userProfile'].errors" class="invalid-feedback">
+                  <div *ngIf="f['userProfile'].errors['required']">Profile est requise</div>
+                </div>
+              </div>
               
               <button 
                 type="submit" 
@@ -135,12 +152,14 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    document.body.classList.add('auth-bg');
     this.registerForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]],
       role: ['', Validators.required],
-      specialization: ['']
+      specialization: [''],
+      userProfile: ['']
     });
     
     // Redirect if already logged in
@@ -154,6 +173,9 @@ export class RegisterComponent implements OnInit {
   isAgentRole(): boolean {
     return this.registerForm.get('role')?.value === 'agent';
   }
+  isInterlocuteurRole(): boolean {
+    return this.registerForm.get('role')?.value === 'interlocuteur';
+  }
   
   onRoleChange(): void {
     const specializationControl = this.registerForm.get('specialization');
@@ -164,6 +186,16 @@ export class RegisterComponent implements OnInit {
       specializationControl?.setValue('');
     }
     specializationControl?.updateValueAndValidity();
+
+    const profileControl = this.registerForm.get('userProfile');
+    if (this.isInterlocuteurRole()) {
+      profileControl?.setValidators(Validators.required);
+    }
+    else {
+      profileControl?.clearValidators();
+      profileControl?.setValue('');
+    }
+    profileControl?.updateValueAndValidity();
   }
 
   onSubmit(): void {
@@ -175,12 +207,15 @@ export class RegisterComponent implements OnInit {
 
     this.isLoading = true;
     
-    // Remove specialization if not an agent
+    // Remove specialization if not an agent and remove profile if not an interlocuteur
     const registerData = {...this.registerForm.value};
     if (registerData.role !== 'agent') {
       delete registerData.specialization;
     }
-    
+    if (registerData.role !== 'interlocuteur') {
+      delete registerData.userProfile;
+    }
+    // Call the register method from AuthService
     this.authService.register(registerData)
       .subscribe({
         next: (response) => {
@@ -193,5 +228,8 @@ export class RegisterComponent implements OnInit {
           this.toastr.error(error.message || 'Échec de l\'inscription');
         }
       });
+  }
+  ngOnDestroy(): void {
+    document.body.classList.remove('auth-bg');
   }
 }
