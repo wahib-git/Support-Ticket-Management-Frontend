@@ -20,13 +20,13 @@ interface NavItem {
         <h5 class="fw-bold mb-0">Support Scolaire</h5>
         <small class="text-muted">{{ role | titlecase }}</small>
       </div>
-      
-      <hr>
-      
+
+      <hr />
+
       <ul class="nav flex-column">
         <li class="nav-item" *ngFor="let item of navItems">
-          <a 
-            class="nav-link py-2 px-3 d-flex align-items-center" 
+          <a
+            class="nav-link py-2 px-3 d-flex align-items-center"
             [routerLink]="item.route"
             routerLinkActive="active"
           >
@@ -35,18 +35,22 @@ interface NavItem {
           </a>
         </li>
       </ul>
-      
+
       <div class="mt-auto">
-        <hr>
+        <hr />
         <div class="d-flex align-items-center mb-3">
-          <button class="btn btn-sm btn-outline-secondary" (click)="logout()">
+          <button
+            class="btn btn-sm btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+            (click)="logout()"
+          >
             <i class="bi bi-box-arrow-right"></i>
+            <span>Déconnexion</span>
           </button>
         </div>
       </div>
     </div>
   `,
-  styles: []
+  styles: [],
 })
 export class SidebarComponent implements OnInit {
   @Input() role: string = '';
@@ -66,7 +70,7 @@ export class SidebarComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching user role:', err);
-      }
+      },
     });
   }
 
@@ -74,22 +78,62 @@ export class SidebarComponent implements OnInit {
     switch (role) {
       case 'admin':
         this.navItems = [
-          { label: 'Tableau de bord', route: '/admin/dashboard', icon: 'bi-speedometer2', roles: ['admin'] },
-          { label: 'Utilisateurs', route: '/admin/users', icon: 'bi-people', roles: ['admin'] },
-          { label: 'Tickets', route: '/admin/tickets', icon: 'bi-ticket', roles: ['admin'] }
+          {
+            label: 'Tableau de bord',
+            route: '/admin/dashboard',
+            icon: 'bi-speedometer2',
+            roles: ['admin'],
+          },
+          {
+            label: 'Utilisateurs',
+            route: '/admin/users',
+            icon: 'bi-people',
+            roles: ['admin'],
+          },
+          {
+            label: 'Tickets',
+            route: '/admin/tickets',
+            icon: 'bi-ticket',
+            roles: ['admin'],
+          },
         ];
         break;
       case 'agent':
         this.navItems = [
-          { label: 'Mes tickets', route: '/agent/tickets', icon: 'bi-ticket', roles: ['agent'] },
-          { label: 'Profil', route: '/agent/profile', icon: 'bi-person', roles: ['agent'] }
+          {
+            label: 'Mes tickets',
+            route: '/agent/tickets',
+            icon: 'bi-ticket',
+            roles: ['agent'],
+          },
+          {
+            label: 'Profil',
+            route: '/agent/profile',
+            icon: 'bi-person',
+            roles: ['agent'],
+          },
         ];
         break;
       case 'interlocuteur':
         this.navItems = [
-          { label: 'Mes tickets', route: '/interlocuteur/tickets', icon: 'bi-ticket', roles: ['interlocuteur'] },
-          { label: 'Nouveau ticket', route: '/interlocuteur/tickets/create', icon: 'bi-plus-circle', roles: ['interlocuteur'] },
-          { label: 'Profil', route: '/interlocuteur/profile', icon: 'bi-person', roles: ['interlocuteur'] }
+          {
+            label: 'Mes tickets',
+            route: '/interlocuteur/tickets',
+            icon: 'bi-ticket',
+            roles: ['interlocuteur'],
+          },
+          {
+            label: 'Nouveau ticket',
+            route: '/interlocuteur/tickets/create',
+            icon: 'bi-plus-circle',
+            roles: ['interlocuteur'],
+          },
+          {
+            label: 'Profil',
+            route: '/interlocuteur/profile',
+            icon: 'bi-person',
+            roles: ['interlocuteur'],
+          },
         ];
         break;
       default:
