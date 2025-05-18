@@ -34,6 +34,9 @@ export const routes: Routes = [
         path: 'users',
         loadComponent: () => import('./features/admin/user-management/user-management.component').then(m => m.UserManagementComponent)
       },
+      { path: 'tickets/:id',
+        loadComponent: () => import('./shared/components/ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
+      },
       {
         path: '',
         redirectTo: 'dashboard',
@@ -52,6 +55,9 @@ export const routes: Routes = [
       {
         path: 'tickets',
         loadComponent: () => import('./features/agent/agent-ticket-list/agent-ticket-list.component').then(m => m.AgentTicketListComponent)
+      },
+      { path: 'tickets/:id',
+        loadComponent: () => import('./shared/components/ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
       },
       {
         path: '',
@@ -79,6 +85,9 @@ export const routes: Routes = [
       { 
         path: 'tickets/edit/:id',
         loadComponent: () => import('./features/teacher/ticket-form/ticket-form.component').then(m => m.TicketFormComponent)
+      },
+      { path: 'tickets/:id',
+        loadComponent: () => import('./shared/components/ticket-detail/ticket-detail.component').then(m => m.TicketDetailComponent)
       },
       {
         path: '',

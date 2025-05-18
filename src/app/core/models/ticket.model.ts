@@ -4,7 +4,7 @@ export interface Ticket {
   description: string;
   category: 'Infrastructure informatique' | 'Entretien des locaux' | 'Sécurité et sûreté';
   priority: 'urgent' | 'important' | 'mineur';
-  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  status: 'open'  | 'resolved' | 'closed';
   createdBy: string | User;
   assignedTo?: string | User;
   image?: string;
