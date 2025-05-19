@@ -19,7 +19,7 @@
 
 body {
   font-family: "Roboto", "Segoe UI", sans-serif;
-  background-color: #f4f7fa;
+  background-color: #67a3df !important;
   color: #333;
 }
 .auth-bg {
@@ -114,6 +114,14 @@ body {
   background: #5c8ad4 !important;
   color: #fff;
   min-height: 100vh;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px; /* adapte selon ta maquette */
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
   border-right: 1px solid #1a2942;
 }
 

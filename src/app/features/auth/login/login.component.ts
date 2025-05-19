@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    document.body.classList.add('auth-bg');
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -123,4 +124,7 @@ export class LoginComponent implements OnInit {
         }
       });
   }
+  ngOnDestroy(): void {
+  document.body.classList.remove('auth-bg');
+}
 }
