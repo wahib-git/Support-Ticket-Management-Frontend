@@ -19,6 +19,13 @@ export interface PriorityStat {
   _id: string; // Nom de la priorité
   count: number; // Nombre de tickets
 }
+export interface TopAgent {
+  name: string;
+  specialization: string;
+  resolvedCount: number;
+  assignedCount: number;
+}
+
 
 export interface TicketStats {
   totalTickets: number;
@@ -28,7 +35,6 @@ export interface TicketStats {
   resolutionRate: number;
   ticketsByCategory: { category: string; count: number }[];
   ticketsByPriority: { priority: string; count: number }[];
-  topAgents: { agent: { name: string; specialization: string }; resolvedCount: number }[];
-}
+  topAgents: TopAgent[];}
 
 import { User } from './user.model';

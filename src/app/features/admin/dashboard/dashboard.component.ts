@@ -3,24 +3,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.service';
 import { UserService } from '../../../core/services/user.service';
-import { CategoryStat, PriorityStat, TicketStats } from '../../../core/models/ticket.model';
+import {
+  CategoryStat,
+  PriorityStat,
+  TicketStats,
+} from '../../../core/models/ticket.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgChartsModule } from 'ng2-charts';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    NgChartsModule
-  ],
+  imports: [CommonModule, RouterModule, NgChartsModule],
   template: `
     <div class="row">
       <div class="col-12">
         <h2 class="mb-4">Tableau de bord</h2>
-      
-        
+
         <div *ngIf="!isLoading">
           <!-- Stats Overview -->
           <div class="row mb-4">
@@ -39,84 +38,114 @@ import { NgChartsModule } from 'ng2-charts';
             <div class="col-md-3">
               <div class="dashboard-stat-card bg-white">
                 <h5 class="text-muted mb-2">Tickets résolus</h5>
-                <h2 class="mb-0 text-success">{{ stats?.resolvedTickets || 0 }}</h2>
+                <h2 class="mb-0 text-success">
+                  {{ stats?.resolvedTickets || 0 }}
+                </h2>
               </div>
             </div>
             <div class="col-md-3">
               <div class="dashboard-stat-card bg-white">
                 <h5 class="text-muted mb-2">Tickets fermés</h5>
-                <h2 class="mb-0 text-success">{{ stats?.closedTickets || 0 }}</h2>
+                <h2 class="mb-0 text-success">
+                  {{ stats?.closedTickets || 0 }}
+                </h2>
               </div>
             </div>
           </div>
-          
+
           <!-- Charts -->
           <div class="row mb-4">
             <div class="col-md-6">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Tickets par catégorie</h5>
-                  <div *ngIf="stats?.ticketsByCategory?.length === 0" class="text-center py-4">
+                  <div
+                    *ngIf="stats?.ticketsByCategory?.length === 0"
+                    class="text-center py-4"
+                  >
                     <p class="text-muted">Aucune donnée disponible</p>
                   </div>
-                  <div *ngIf="stats?.ticketsByCategory?.length !== 0" class="chart-container" style="height: 300px;">
-                    <canvas baseChart
-                      [datasets]="[{data: categoryData, label: 'Tickets'}]"
+                  <div
+                    *ngIf="stats?.ticketsByCategory?.length !== 0"
+                    class="chart-container"
+                    style="height: 300px;"
+                  >
+                    <canvas
+                      baseChart
+                      [datasets]="[{ data: categoryData, label: 'Tickets' }]"
                       [labels]="categoryLabels"
-                      [options]="{responsive: true}"
+                      [options]="{ responsive: true }"
                       [legend]="true"
-                      type="doughnut">
+                      type="doughnut"
+                    >
                     </canvas>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div class="col-md-6">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Tickets par priorité</h5>
-                  <div *ngIf="stats?.ticketsByPriority?.length === 0" class="text-center py-4">
+                  <div
+                    *ngIf="stats?.ticketsByPriority?.length === 0"
+                    class="text-center py-4"
+                  >
                     <p class="text-muted">Aucune donnée disponible</p>
                   </div>
-                  <div *ngIf="stats?.ticketsByPriority?.length !== 0" class="chart-container" style="height: 300px;">
-                    <canvas baseChart
-                      [datasets]="[{data:priorityData, label: 'Tickets'}]"
+                  <div
+                    *ngIf="stats?.ticketsByPriority?.length !== 0"
+                    class="chart-container"
+                    style="height: 300px;"
+                  >
+                    <canvas
+                      baseChart
+                      [datasets]="[{ data: priorityData, label: 'Tickets' }]"
                       [labels]="priorityLabels"
-                      [options]="{responsive: true}"
+                      [options]="{ responsive: true }"
                       [legend]="true"
-                      type="doughnut">
+                      type="doughnut"
+                    >
                     </canvas>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
           <!-- Top Agents -->
           <div class="row">
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Top agents</h5>
-                  
-                  <div *ngIf="stats?.topAgents?.length === 0" class="text-center py-4">
+
+                  <div
+                    *ngIf="stats?.topAgents?.length === 0"
+                    class="text-center py-4"
+                  >
                     <p class="text-muted">Aucune donnée disponible</p>
                   </div>
-                  
-                  <div *ngIf="stats?.topAgents?.length !== 0" class="table-responsive">
+
+                  <div
+                    *ngIf="stats?.topAgents?.length !== 0"
+                    class="table-responsive"
+                  >
                     <table class="table table-hover">
                       <thead>
                         <tr>
                           <th>Agent</th>
                           <th>Spécialisation</th>
+                          <th>Tickets assignés</th>
                           <th>Tickets résolus</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let agent of stats?.topAgents">
-                          <td>{{ agent.agent.name }}</td>
-                          <td>{{ agent.agent.specialization }}</td>
+                          <td>{{ agent.name }}</td>
+                          <td>{{ agent.specialization }}</td>
+                          <td>{{ agent.assignedCount }}</td>
                           <td>{{ agent.resolvedCount }}</td>
                         </tr>
                       </tbody>
@@ -130,7 +159,7 @@ import { NgChartsModule } from 'ng2-charts';
       </div>
     </div>
   `,
-  styles: []
+  styles: [],
 })
 export class DashboardComponent implements OnInit {
   stats: TicketStats | null = null;
@@ -155,39 +184,64 @@ export class DashboardComponent implements OnInit {
     console.log('Dashboard loadStats called');
     this.isLoading = true;
     this.ticketService.getTicketStats().subscribe({
-        next: (response: { categoryStats: CategoryStat[]; priorityStats: PriorityStat[]; stats: any[]; topAgent: any }) => {
-          // Mapper les données de la réponse
-          this.stats = {
-            totalTickets: response.stats[0]?.total || 0,
-            openTickets: response.stats[0]?.open || 0,
-            resolvedTickets: response.stats[0]?.resolved || 0,
-            closedTickets: response.stats[0]?.closed || 0,
-            resolutionRate: response.stats[0]?.resolutionRate || 0,
-            ticketsByCategory: response.categoryStats.map((item: CategoryStat) => ({
+      next: (response: {
+        categoryStats: CategoryStat[];
+        priorityStats: PriorityStat[];
+        stats: any[];
+        agentsStats: any;
+      }) => {
+        // Mapper les données de la réponse
+        this.stats = {
+          totalTickets: response.stats[0]?.total || 0,
+          openTickets: response.stats[0]?.open || 0,
+          resolvedTickets: response.stats[0]?.resolved || 0,
+          closedTickets: response.stats[0]?.closed || 0,
+          resolutionRate: response.stats[0]?.resolutionRate || 0,
+          ticketsByCategory: response.categoryStats.map(
+            (item: CategoryStat) => ({
               category: item._id,
-              count: item.count
-            })),
-            ticketsByPriority: response.priorityStats.map((item: PriorityStat) => ({
+              count: item.count,
+            })
+          ),
+          ticketsByPriority: response.priorityStats.map(
+            (item: PriorityStat) => ({
               priority: item._id,
-              count: item.count
-            })),
-            topAgents: response.topAgent || []
-          };
-  
-          console.log('Stats loaded:', this.stats);
-          this.toastr.success('Statistiques chargées avec succès');
-          // ...après avoir reçu les données
-          this.categoryLabels = this.stats.ticketsByCategory.map(item => item.category);
-          this.categoryData = this.stats.ticketsByCategory.map(item => item.count);
-          this.priorityLabels = this.stats.ticketsByPriority.map(item => item.priority);
-          this.priorityData = this.stats.ticketsByPriority.map(item => item.count);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          this.toastr.error('Error loading stats:', error);
-          this.isLoading = false;
-        }
-      });
+              count: item.count,
+            })
+          ),
+          topAgents: (response.agentsStats || [])
+            .map((a: any) => ({
+              name: a.name || a.agent?.name,
+              specialization: a.specialization || a.agent?.specialization,
+              resolvedCount: a.resolvedCount ?? 0,
+              assignedCount: a.assignedCount ?? 0,
+            }))
+            .sort((a:any, b:any) => b.resolvedCount - a.resolvedCount),
+        };
+
+        console.log('Stats loaded:', this.stats);
+        console.log('topAgents:', this.stats.topAgents);
+
+        this.toastr.success('Statistiques chargées avec succès');
+        // ...après avoir reçu les données
+        this.categoryLabels = this.stats.ticketsByCategory.map(
+          (item) => item.category
+        );
+        this.categoryData = this.stats.ticketsByCategory.map(
+          (item) => item.count
+        );
+        this.priorityLabels = this.stats.ticketsByPriority.map(
+          (item) => item.priority
+        );
+        this.priorityData = this.stats.ticketsByPriority.map(
+          (item) => item.count
+        );
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.toastr.error('Error loading stats:', error);
+        this.isLoading = false;
+      },
+    });
   }
-  
 }
