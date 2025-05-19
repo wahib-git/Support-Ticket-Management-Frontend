@@ -143,12 +143,12 @@ import { environment } from '../../../../environments/environment';
                   Formats acceptés: JPG, PNG, GIF. Taille max: 5MB
                 </small>
 
-                <div *ngIf="ticketImage" class="mt-2">
+                <div *ngIf="ticketImage" class="mt-4">
                   <img
                     [src]="ticketImage"
                     alt="Aperçu de l'image"
                     class="img-thumbnail"
-                    style="max-height: 200px"
+                    style="max-height: 500px"
                   />
                 </div>
               </div>

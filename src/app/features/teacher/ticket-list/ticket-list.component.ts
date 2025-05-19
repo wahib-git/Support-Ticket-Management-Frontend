@@ -110,6 +110,13 @@ import { TicketPriorityBadgeComponent } from '../../../shared/components/ticket-
                   >
                     Modifier
                   </button>
+                  <button 
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    [routerLink]="['/interlocuteur/tickets', ticket._id]"
+                  >
+                    Détails
+                  </button>
                 </div>
               </div>
             </div>
