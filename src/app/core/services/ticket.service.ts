@@ -69,6 +69,10 @@ export class TicketService {
   changeStatus(ticketId: string, status: string): Observable<any> {
   return this.http.patch(`${this.apiUrl}/${ticketId}/status`, { status });
 }
+// Change ticket status to "closed"
+  closeStatus(ticketId: string, status: string): Observable<any> {
+  return this.http.patch(`${this.apiUrl}/${ticketId}/close`, { status });
+}
 
   // Get ticket statistics
   getTicketStats(): Observable<any> {

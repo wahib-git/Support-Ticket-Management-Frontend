@@ -214,7 +214,7 @@ export class TicketListComponent implements OnInit {
   closeTicket(ticketId: string): void {
     this.isLoading = true;
     
-    this.ticketService.changeStatus(ticketId, 'closed').subscribe({
+    this.ticketService.closeStatus(ticketId, 'closed').subscribe({
       next: () => {
         this.toastr.success('Ticket clôturé avec succès');
         this.loadTickets();
