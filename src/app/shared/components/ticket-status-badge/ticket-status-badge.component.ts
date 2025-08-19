@@ -13,13 +13,12 @@ import { CommonModule } from '@angular/common';
   styles: []
 })
 export class TicketStatusBadgeComponent {
-  @Input() status: 'open' | 'in_progress' | 'resolved' | 'closed' = 'open';
+  @Input() status: 'open' | 'resolved' | 'closed' = 'open';
   @Input() customClass: string = '';
 
   getStatusLabel(): string {
     switch(this.status) {
       case 'open': return 'Ouvert';
-      case 'in_progress': return 'En cours';
       case 'resolved': return 'Résolu';
       case 'closed': return 'Clôturé';
       default: return 'Inconnu';

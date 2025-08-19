@@ -61,25 +61,54 @@ This project leverages Angular's **standalone components** for a modular and sim
 - **RxJS**: Reactive programming library.
 - **SCSS**: Styling.
 
-## Testing
+## How to Run Tests
 
-### Unit Tests
+### Unit & Integration Tests
 
-Run the following command to execute unit tests:
+Run all unit and integration tests using:
 
 ```bash
 ng test
 ```
 
-### End-to-End Tests
+This will launch the Angular test runner (Karma) and execute all `.spec.ts` files.
 
-Run the following command to execute end-to-end tests:
+### End-to-End (E2E) Tests with Cypress
+
+Run E2E tests using:
 
 ```bash
-ng e2e
+npm run e2e
 ```
 
-Ensure that the required testing dependencies are installed before running the tests.
+This will open the Cypress test runner. Select a test to run in the Cypress UI, or run headless with:
+
+```bash
+npx cypress run
+```
+
+Make sure your Angular app is running (`ng serve`) before running E2E tests.
+
+## Required Dependencies for Testing
+
+Before running tests, make sure you have installed the following:
+
+- **Angular CLI**
+  ```bash
+  npm install -g @angular/cli
+  ```
+- **Project dependencies**
+  ```bash
+  npm install
+  ```
+- **Cypress (for E2E tests)**  
+  Cypress is already listed in `devDependencies`. If not installed, run:
+  ```bash
+  npm install cypress --save-dev
+  ```
+
+All other dependencies are managed via `package.json`.  
+If you add new test libraries, install them with `npm install <package> --save-dev`.
 
 ## Contribution Guidelines
 
