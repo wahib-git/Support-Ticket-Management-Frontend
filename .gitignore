@@ -38,11 +38,68 @@ node_modules
 /.angular/cache
 .sass-cache/
 /connect.lock
-/coverage
 /libpeerconnection.log
-testem.log
+/testem.log
 /typings
 
 # System files
 .DS_Store
 Thumbs.db
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+out-tsc/
+bazel-out/
+tmp/
+
+# Cypress outputs
+cypress/screenshots/
+cypress/videos/
+
+# Coverage reports
+coverage/
+
+# Environment files (if any)
+src/environments/*.ts
+
+# IDE/editor folders and files
+.vscode/
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.angular/
+.history/
+
+# Miscellaneous
+.angular/cache
+.sass-cache/
+connect.lock
+libpeerconnection.log
+testem.log
+typings/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Compiled TypeScript
+*.js
+*.js.map
+
+# Temporary files
+*.tmp
+
+# Optional: keep shared VSCode config files
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json

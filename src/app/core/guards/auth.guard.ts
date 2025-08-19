@@ -1,27 +1,29 @@
-import { Injectable } from '@angular/core';
-import { 
-  CanActivate, 
-  ActivatedRouteSnapshot, 
-  RouterStateSnapshot, 
-  Router 
+import { Injectable, inject } from '@angular/core';
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  Router,
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, take, catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  
-  constructor(private authService: AuthService, private router: Router) {}
-  
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | boolean {
     if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: state.url },
+      });
       return false;
     }
 
@@ -32,7 +34,7 @@ export class AuthGuard implements CanActivate {
 
     return this.authService.getRole().pipe(
       take(1),
-      map(role => {
+      map((role) => {
         const normalizedRole = role ?? undefined; // Convert null to undefined
         console.log('Role in AuthGuard:', role); // Log du rôle
 
@@ -52,7 +54,10 @@ export class AuthGuard implements CanActivate {
     );
   }
 
-  private checkRole(userRole: string | undefined, requiredRole: string | string[]): boolean {
+  private checkRole(
+    userRole: string | undefined,
+    requiredRole: string | string[]
+  ): boolean {
     const hasAccess = Array.isArray(requiredRole)
       ? requiredRole.includes(userRole || '')
       : userRole === requiredRole;

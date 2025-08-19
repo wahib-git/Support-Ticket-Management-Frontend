@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -7,14 +7,20 @@ import { environment } from '../../../environments/environment';
 import { AuthResponse, LoginCredentials, RegisterData } from '../models/user.model';
 import { jwtDecode } from 'jwt-decode';
 
+interface DecodedToken {
+  exp: number;
+  role: string;
+  _id: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   
   private tokenKey = environment.tokenKey;
-
-  constructor(private http: HttpClient, private router: Router) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, credentials)
@@ -59,10 +65,10 @@ export class AuthService {
     if (!token) return false;
     
     try {
-      const decodedToken: any = jwtDecode(token);
+      const decodedToken: DecodedToken = jwtDecode(token);
       const isExpired = decodedToken.exp < Date.now() / 1000;
       return !isExpired;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
@@ -79,13 +85,14 @@ export class AuthService {
     }
     return of(null); // Retourne un Observable contenant `null` si aucun token n'est présent
   }
-  getUserId(){
+  getUserId(): string | undefined {
     const token = this.getToken();
     if(token){
-      const decodedToken = jwtDecode<any>(token);
+      const decodedToken = jwtDecode<DecodedToken>(token);
       const id = decodedToken._id;
       return id;
     }
+    return undefined;
   }
  
     

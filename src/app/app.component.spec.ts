@@ -1,8 +1,12 @@
 import { AppComponent } from './app.component';
 
-declare const describe: any;
-declare const it: any;
-declare const expect: any;
+// Types précis pour Jasmine
+declare const describe: (description: string, spec: () => void) => void;
+declare const it: (description: string, spec: () => void) => void;
+declare const expect: (actual: any) => {
+  toBeTruthy: () => void;
+  toBe: (expected: any) => void;
+};
 
 describe('AppComponent', () => {
   it('should create the app', () => {

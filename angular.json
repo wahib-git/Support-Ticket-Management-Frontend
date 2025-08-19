@@ -3,6 +3,7 @@
   "cli": {
     "analytics": "1e1de97b-a744-405a-8b5a-0397bb3d01ce",
     "schematicCollections": [
+      "angular-eslint",
       "@cypress/schematic",
       "@schematics/angular"
     ]
@@ -109,6 +110,15 @@
             "production": {
               "devServerTarget": "demo:serve:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       },
