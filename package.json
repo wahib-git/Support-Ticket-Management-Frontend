@@ -9,8 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
-    "e2e": "ng e2e",
-    "e2e:ci": "cypress run --headless",
+    "e2e": "start-server-and-test start http://localhost:4200 cypress:run",
+    "e2e:ci": "start-server-and-test start http://localhost:4200 cypress:run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "lint": "ng lint"
@@ -52,6 +52,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "start-server-and-test": "^2.0.13",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.40.0"
   }
