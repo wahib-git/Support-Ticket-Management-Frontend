@@ -29,7 +29,7 @@ describe('UserService', () => {
         _id: '1',
         name: 'Test User',
         email: 'test@example.com',
-        role: 'admin' as 'admin', // explicitly type as one of the allowed literals
+        role: 'admin' as 'admin',
       },
     ];
     service.getUsers().subscribe((users) => {

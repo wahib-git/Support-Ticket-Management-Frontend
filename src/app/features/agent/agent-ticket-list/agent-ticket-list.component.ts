@@ -142,7 +142,7 @@ export class AgentTicketListComponent implements OnInit {
         this.applyFilters();
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors du chargement des tickets');
         this.isLoading = false;
       }
@@ -184,7 +184,7 @@ export class AgentTicketListComponent implements OnInit {
         this.toastr.success('Ticket resolu avec succès');
         this.loadTickets();
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors de la resolution du ticket');
         this.isLoading = false;
       }

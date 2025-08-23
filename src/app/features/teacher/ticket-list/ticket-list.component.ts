@@ -167,7 +167,7 @@ export class TicketListComponent implements OnInit {
         this.applyFilters();
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors du chargement des tickets');
         this.isLoading = false;
       }
@@ -219,7 +219,7 @@ export class TicketListComponent implements OnInit {
         this.toastr.success('Ticket clôturé avec succès');
         this.loadTickets();
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors de la clôture du ticket');
         this.isLoading = false;
       }

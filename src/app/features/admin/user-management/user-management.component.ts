@@ -103,7 +103,7 @@ export class UserManagementComponent implements OnInit {
         this.filteredUsers = [...users];
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors du chargement des utilisateurs');
         this.isLoading = false;
       }
@@ -118,7 +118,7 @@ export class UserManagementComponent implements OnInit {
           this.toastr.success('Utilisateur supprimé avec succès');
           this.loadUsers();
         },
-        error: (error) => {
+        error: () => {
           this.toastr.error('Erreur lors de la suppression de l\'utilisateur');
           this.isLoading = false;
         }

@@ -227,7 +227,7 @@ export class TicketFormComponent implements OnInit {
 
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.toastr.error('Erreur lors du chargement du ticket');
         this.isLoading = false;
       },

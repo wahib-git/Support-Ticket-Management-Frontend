@@ -218,7 +218,7 @@ export class RegisterComponent implements OnInit {
     // Call the register method from AuthService
     this.authService.register(registerData)
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.isLoading = false;
           this.toastr.success('Inscription réussie');
           this.authService.redirectBasedOnRole();
