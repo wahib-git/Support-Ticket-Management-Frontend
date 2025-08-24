@@ -3,9 +3,11 @@ import { AppComponent } from './app.component';
 // Types précis pour Jasmine
 declare const describe: (description: string, spec: () => void) => void;
 declare const it: (description: string, spec: () => void) => void;
-declare const expect: (actual: any) => {
+
+// Utilisation d'un type générique <T>
+declare const expect: <T>(actual: T) => {
   toBeTruthy: () => void;
-  toBe: (expected: any) => void;
+  toBe: (expected: T) => void;
 };
 
 describe('AppComponent', () => {
@@ -18,4 +20,4 @@ describe('AppComponent', () => {
     const app = new AppComponent();
     expect(app.title).toBe('Support Ticket System');
   });
-});
+})
