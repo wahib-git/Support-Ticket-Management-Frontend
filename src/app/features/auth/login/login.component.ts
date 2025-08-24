@@ -113,7 +113,7 @@ export class LoginComponent implements OnInit {
     
     this.authService.login(this.loginForm.value)
       .subscribe({
-        next: (response) => {
+        next: () => {
           this.isLoading = false;
           this.toastr.success('Connexion réussie');
           this.authService.redirectBasedOnRole();
