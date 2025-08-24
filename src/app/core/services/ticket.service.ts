@@ -3,7 +3,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { Ticket, TicketStats } from '../models/ticket.model';
+import { Ticket, TicketFilters, ApiStatsResponse } from '../models/ticket.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,14 @@ export class TicketService {
   constructor(private http: HttpClient) {}
 
   // Get all tickets or filtered by user role
-  getTickets(filters?: any): Observable<Ticket[]> {
+  getTickets(filters?: TicketFilters): Observable<Ticket[]> {
     let params = new HttpParams();
     console.log('Filters:', filters);
     console.log('params:', params);
     if (filters) {
       Object.keys(filters).forEach(key => {
-        if (filters[key]) {
-          params = params.append(key, filters[key]);
+        if (filters[key as keyof TicketFilters]) {
+          params = params.append(key, filters[key as keyof TicketFilters] as string);
         }
       });
     }
@@ -51,31 +52,31 @@ export class TicketService {
   }
 
   // Update a ticket
-  updateTicket(id: string, ticketData: any): Observable<Ticket> {
-  return this.http.patch<Ticket>(`${this.apiUrl}/${id}`, ticketData)
-    .pipe(
-      tap(updatedTicket => {
-        const currentTickets = this.ticketsSubject.value;
-        const updatedTickets = currentTickets.map(ticket => 
-          ticket._id === id ? updatedTicket : ticket
-        );
-        this.ticketsSubject.next(updatedTickets);
-      })
-    );
-}
- 
+  updateTicket(id: string, ticketData:FormData): Observable<Ticket> {
+    return this.http.patch<Ticket>(`${this.apiUrl}/${id}`, ticketData)
+      .pipe(
+        tap(updatedTicket => {
+          const currentTickets = this.ticketsSubject.value;
+          const updatedTickets = currentTickets.map(ticket =>
+            ticket._id === id ? updatedTicket : ticket
+          );
+          this.ticketsSubject.next(updatedTickets);
+        })
+      );
+  }
 
   // Change ticket status
-  changeStatus(ticketId: string, status: string): Observable<any> {
-  return this.http.patch(`${this.apiUrl}/${ticketId}/status`, { status });
-}
-// Change ticket status to "closed"
-  closeStatus(ticketId: string, status: string): Observable<any> {
-  return this.http.patch(`${this.apiUrl}/${ticketId}/close`, { status });
-}
+  changeStatus(ticketId: string, status: string): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${ticketId}/status`, { status });
+  }
+
+  // Change ticket status to "closed"
+  closeStatus(ticketId: string, status: string): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${ticketId}/close`, { status });
+  }
 
   // Get ticket statistics
-  getTicketStats(): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/admin/stats`);
+  getTicketStats(): Observable<ApiStatsResponse> {
+    return this.http.get<ApiStatsResponse>(`${environment.apiUrl}/admin/stats`);
   }
 }

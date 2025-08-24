@@ -3,11 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.service';
 import { UserService } from '../../../core/services/user.service';
-import {
-  CategoryStat,
-  PriorityStat,
-  TicketStats,
-} from '../../../core/models/ticket.model';
+import { TicketStats, ApiStatsResponse } from '../../../core/models/ticket.model';
 import { ToastrService } from 'ngx-toastr';
 import { NgChartsModule } from 'ng2-charts';
 
@@ -21,7 +17,6 @@ import { NgChartsModule } from 'ng2-charts';
         <h2 class="mb-4">Tableau de bord</h2>
 
         <div *ngIf="!isLoading">
-          <!-- Stats Overview -->
           <div class="row mb-4">
             <div class="col-md-3">
               <div class="dashboard-stat-card bg-white">
@@ -53,7 +48,6 @@ import { NgChartsModule } from 'ng2-charts';
             </div>
           </div>
 
-          <!-- Charts -->
           <div class="row mb-4">
             <div class="col-md-6">
               <div class="card">
@@ -114,7 +108,6 @@ import { NgChartsModule } from 'ng2-charts';
             </div>
           </div>
 
-          <!-- Top Agents -->
           <div class="row">
             <div class="col-12">
               <div class="card">
@@ -184,46 +177,33 @@ export class DashboardComponent implements OnInit {
     console.log('Dashboard loadStats called');
     this.isLoading = true;
     this.ticketService.getTicketStats().subscribe({
-      next: (response: {
-        categoryStats: CategoryStat[];
-        priorityStats: PriorityStat[];
-        stats: any[];
-        agentsStats: any;
-      }) => {
-        // Mapper les données de la réponse
+      next: (response: ApiStatsResponse) => {
+        // Map the API response to the `TicketStats` interface
         this.stats = {
           totalTickets: response.stats[0]?.total || 0,
           openTickets: response.stats[0]?.open || 0,
           resolvedTickets: response.stats[0]?.resolved || 0,
           closedTickets: response.stats[0]?.closed || 0,
           resolutionRate: response.stats[0]?.resolutionRate || 0,
-          ticketsByCategory: response.categoryStats.map(
-            (item: CategoryStat) => ({
-              category: item._id,
-              count: item.count,
-            })
+          ticketsByCategory: response.categoryStats.map(item => ({
+            category: item._id,
+            count: item.count,
+          })),
+          ticketsByPriority: response.priorityStats.map(item => ({
+            priority: item._id,
+            count: item.count,
+          })),
+          topAgents: response.agentsStats.sort(
+            (a, b) => b.resolvedCount - a.resolvedCount
           ),
-          ticketsByPriority: response.priorityStats.map(
-            (item: PriorityStat) => ({
-              priority: item._id,
-              count: item.count,
-            })
-          ),
-          topAgents: (response.agentsStats || [])
-            .map((a: any) => ({
-              name: a.name || a.agent?.name,
-              specialization: a.specialization || a.agent?.specialization,
-              resolvedCount: a.resolvedCount ?? 0,
-              assignedCount: a.assignedCount ?? 0,
-            }))
-            .sort((a:any, b:any) => b.resolvedCount - a.resolvedCount),
         };
 
         console.log('Stats loaded:', this.stats);
         console.log('topAgents:', this.stats.topAgents);
 
         this.toastr.success('Statistiques chargées avec succès');
-        // ...après avoir reçu les données
+        
+        // Populate chart data
         this.categoryLabels = this.stats.ticketsByCategory.map(
           (item) => item.category
         );
@@ -236,6 +216,7 @@ export class DashboardComponent implements OnInit {
         this.priorityData = this.stats.ticketsByPriority.map(
           (item) => item.count
         );
+        
         this.isLoading = false;
       },
       error: (error) => {
