@@ -29,12 +29,14 @@ describe('UserService', () => {
         _id: '1',
         name: 'Test User',
         email: 'test@example.com',
-        role: 'admin' as 'admin',
+        role: 'admin',
       },
-    ];
+    ] as const; // Utilisation de `as const`
+
     service.getUsers().subscribe((users) => {
       expect(users).toEqual(mockUsers);
     });
+
     const req = httpMock.expectOne(`${environment.apiUrl}/admin/users`);
     expect(req.request.method).toBe('GET');
     req.flush(mockUsers);
