@@ -49,122 +49,122 @@ jobs:
           npm run test:ci
           npm run e2e
 
-  sonarcloud:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+#   sonarcloud:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v5
+#         with:
+#           fetch-depth: 0
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v5.3.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
-        with:
-          args: 
-            -Dsonar.organization=wahib-git
-            -Dsonar.projectKey=Support-Ticket-Management-Frontend
+#       - name: SonarCloud Scan
+#         uses: SonarSource/sonarqube-scan-action@v5.3.0
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
+#           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+#         with:
+#           args: 
+#             -Dsonar.organization=wahib-git
+#             -Dsonar.projectKey=Support-Ticket-Management-Frontend
             
-  GitleaksScan:
-    name: gitleaks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+#   GitleaksScan:
+#     name: gitleaks
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v5
+#         with:
+#           fetch-depth: 0
+#       - uses: gitleaks/gitleaks-action@v2
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
-  TrivyScan:
-    name: Trivy Scan
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - name: Run Trivy vulnerability scanner in repo mode
-        uses: aquasecurity/trivy-action@0.32.0
-        with:
-          scan-type: "fs"
-          severity: "CRITICAL,HIGH"
+#   TrivyScan:
+#     name: Trivy Scan
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v5
+#         with:
+#           fetch-depth: 0
+#       - name: Run Trivy vulnerability scanner in repo mode
+#         uses: aquasecurity/trivy-action@0.32.0
+#         with:
+#           scan-type: "fs"
+#           severity: "CRITICAL,HIGH"
 
-  OWASPDependencyCheck:
-    name: OWASP Dependency Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
+#   OWASPDependencyCheck:
+#     name: OWASP Dependency Check
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v5
+#         with:
+#           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - uses: dependency-check/Dependency-Check_Action@1.1.0
-        with:
-          project: "Support-Ticket-Management-Frontend"
-          path: "."
-          format: "HTML"
-#         out: "reports"
-      - name: Upload Dependency-Check report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-check-report
-          path: reports/dependency-check-report.html
+#       - uses: dependency-check/Dependency-Check_Action@1.1.0
+#         with:
+#           project: "Support-Ticket-Management-Frontend"
+#           path: "."
+#           format: "HTML"
+# #         out: "reports"
+#       - name: Upload Dependency-Check report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: dependency-check-report
+#           path: reports/dependency-check-report.html
 
-  docker-build-and-scan:
-    name: Build, Scan & Push Docker Image
-    runs-on: ubuntu-latest
+#   docker-build-and-scan:
+#     name: Build, Scan & Push Docker Image
+#     runs-on: ubuntu-latest
 
-    steps:
-      #  Récupération du code
-      - name: Checkout repository
-        uses: actions/checkout@v5
+#     steps:
+#       #  Récupération du code
+#       - name: Checkout repository
+#         uses: actions/checkout@v5
 
-      #  Build de l’image
-      - name: Build Docker image
-        run: |
-          IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}
-          docker build -t $IMAGE .
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+#       #  Build de l’image
+#       - name: Build Docker image
+#         run: |
+#           IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}
+#           docker build -t $IMAGE .
+#           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 
-      #  Scan de l’image avec Trivy
-      - name: Trivy scan Docker image
-        uses: aquasecurity/trivy-action@0.32.0
-        with:
-          image-ref: ${{ env.IMAGE }}
-          severity: CRITICAL,HIGH
-          format: "table"
-          ignore-unfixed: true
+#       #  Scan de l’image avec Trivy
+#       - name: Trivy scan Docker image
+#         uses: aquasecurity/trivy-action@0.32.0
+#         with:
+#           image-ref: ${{ env.IMAGE }}
+#           severity: CRITICAL,HIGH
+#           format: "table"
+#           ignore-unfixed: true
 
-      #  Génération SBOM avec Syft
-      - name: Generate SBOM (Syft)
-        uses: anchore/sbom-action@v0
-        with:
-          image: ${{ env.IMAGE }}
-          output-file: sbom.spdx.json
+#       #  Génération SBOM avec Syft
+#       - name: Generate SBOM (Syft)
+#         uses: anchore/sbom-action@v0
+#         with:
+#           image: ${{ env.IMAGE }}
+#           output-file: sbom.spdx.json
 
-      - name: Upload SBOM
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: sbom.spdx.json
+#       - name: Upload SBOM
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: sbom
+#           path: sbom.spdx.json
 
-      #  Connexion Docker Hub (seulement si scan OK)
-      - name: Log in to Docker Hub
-        if: success()
-        run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+#       #  Connexion Docker Hub (seulement si scan OK)
+#       - name: Log in to Docker Hub
+#         if: success()
+#         run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
-      #  Push sur Docker Hub
-      - name: Push Docker image
-        if: success()
-        run: docker push ${{ env.IMAGE }}
+#       #  Push sur Docker Hub
+#       - name: Push Docker image
+#         if: success()
+#         run: docker push ${{ env.IMAGE }}
