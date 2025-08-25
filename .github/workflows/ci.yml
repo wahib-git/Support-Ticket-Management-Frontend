@@ -46,7 +46,6 @@ jobs:
 
       - name: Run Tests
         run: |
-          npm test
           npm run test:ci
           npm run e2e
 
@@ -64,8 +63,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
-          args: -Dsonar.organization=wahib-git
+          args: 
+            -Dsonar.organization=wahib-git
             -Dsonar.projectKey=Support-Ticket-Management-Frontend
+            
   GitleaksScan:
     name: gitleaks
     runs-on: ubuntu-latest
@@ -113,11 +114,12 @@ jobs:
           project: "Support-Ticket-Management-Frontend"
           path: "."
           format: "HTML"
+#         out: "reports"
       - name: Upload Dependency-Check report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: ${{github.workspace}}/reports/frontend-dependency-check-report.html
+          path: reports/dependency-check-report.html
 
   docker-build-and-scan:
     name: Build, Scan & Push Docker Image
@@ -131,7 +133,7 @@ jobs:
       #  Build de l’image
       - name: Build Docker image
         run: |
-          IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/backend:${{ github.sha }}
+          IMAGE=${{ secrets.DOCKER_HUB_USERNAME }}/frontend:${{ github.sha }}
           docker build -t $IMAGE .
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
 

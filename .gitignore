@@ -24,7 +24,7 @@ node_modules
 .settings/
 *.sublime-workspace
 .angular
-
+.editorconfig
 # Visual Studio Code
 .vscode/*
 .vscode
