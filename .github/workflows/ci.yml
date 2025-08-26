@@ -9,6 +9,7 @@ on:
 
 jobs:
   lint:
+    name: Lint code style check 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -27,6 +28,7 @@ jobs:
         run: npm run lint
 
   test:
+    name: Test (unit, integration & e2e)
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -67,10 +69,22 @@ jobs:
       - name: Run e2e tests
         run: npm run e2e:ci
 
-
-  sonarcloud:
+  GitleaksScan:
+    name: gitleaks Scan
     runs-on: ubuntu-latest
     needs: test
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    needs: GitleaksScan
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -87,20 +101,10 @@ jobs:
             -Dsonar.organization=wahib-git
             -Dsonar.projectKey=Support-Ticket-Management-Frontend
             
-  GitleaksScan:
-    name: gitleaks
-    runs-on: ubuntu-latest
-    needs: sonarcloud
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
 
-  TrivyScan:
-    name: Trivy Scan
+
+  TrivyScanfileSystem:
+    name: Trivy Scan File System
     runs-on: ubuntu-latest
     needs: GitleaksScan
     steps:
@@ -116,7 +120,7 @@ jobs:
   OWASPDependencyCheck:
     name: OWASP Dependency Check
     runs-on: ubuntu-latest
-    needs: TrivyScan
+    needs: TrivyScanfileSystem
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
@@ -144,8 +148,8 @@ jobs:
           name: dependency-check-report
           path: reports/dependency-check-report.html
 
-  docker-build-and-scan:
-    name: Build, Scan & Push Docker Image
+  docker-build-Trivy-scan-Push:
+    name: Build, Scan(trivy) & Push Docker Image
     runs-on: ubuntu-latest
     needs: OWASPDependencyCheck
 
