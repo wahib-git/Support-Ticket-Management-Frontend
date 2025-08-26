@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { UserService } from './user.service';
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 
 describe('UserService', () => {
   let service: UserService;
