@@ -52,6 +52,7 @@ jobs:
           export const environment = {
             production: true,
             apiUrl: '${{ secrets.API_URL }}',
+            imageUrl: '${{ secrets.imageUrl }}',
             tokenKey: '${{ secrets.tokenKey }}'
           };
           EOL
