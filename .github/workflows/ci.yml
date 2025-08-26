@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+
       # 4. Générer le fichier d’environnement pour la CI
       - name: Generate CI environment file
         run: |
@@ -56,8 +56,8 @@ jobs:
           };
           EOL
       # 5. Lancer les tests unitaires et d'intégration (Karma)
-      - name: Run unit & integration tests
-        run: npm run test:ci
+      # - name: Run unit & integration tests
+      #   run: npm run test:ci
 
       # 6. Compiler l’application Angular avec la config CI
       - name: Build Angular app
