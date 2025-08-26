@@ -106,7 +106,7 @@ jobs:
   TrivyScanfileSystem:
     name: Trivy Scan File System
     runs-on: ubuntu-latest
-    needs: GitleaksScan
+    needs: sonarcloud
     steps:
       - uses: actions/checkout@v5
         with:
