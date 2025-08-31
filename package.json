@@ -11,7 +11,6 @@
     "test": "ng test",
     "test:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "e2e": "start-server-and-test start http://localhost:4200 cypress:run",
-    "e2e:ci": "start-server-and-test start http://localhost:4200 cypress:run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --browser chrome --headless",
     "lint": "ng lint"

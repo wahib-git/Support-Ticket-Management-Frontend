@@ -10,7 +10,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "demo": {
+    "support-ticket-frontend": {
       "architect": {
         "build": {
           "builder": "@angular/build:application",
@@ -27,7 +27,13 @@
               "namedChunks": false,
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false
+              "sourceMap": false,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "ci": {
               "aot": true,
@@ -45,10 +51,12 @@
             }
           },
           "options": {
-            "assets": [],
+            "assets": [
+              "src/favicon.ico"
+            ],
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "outputPath": "dist/demo",
+            "outputPath": "dist/support-ticket-frontend",
             "polyfills": ["zone.js"],
             "scripts": [],
             "styles": [
@@ -62,10 +70,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "development": {
-              "buildTarget": "demo:build:development"
+              "buildTarget": "support-ticket-frontend:build:development"
             },
             "production": {
-              "buildTarget": "demo:build:production"
+              "buildTarget": "support-ticket-frontend:build:production"
             }
           },
           "defaultConfiguration": "development"
@@ -102,11 +110,11 @@
         "cypress-run": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "demo:serve"
+            "devServerTarget": "support-ticket-frontend:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "demo:serve:production"
+              "devServerTarget": "support-ticket-frontend:serve:production"
             }
           }
         },
@@ -120,27 +128,27 @@
         "ct": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "demo:serve",
+            "devServerTarget": "support-ticket-frontend:serve",
             "watch": true,
             "headless": false,
             "testingType": "component"
           },
           "configurations": {
             "development": {
-              "devServerTarget": "demo:serve:development"
+              "devServerTarget": "support-ticket-frontend:serve:development"
             }
           }
         },
         "e2e": {
           "builder": "@cypress/schematic:cypress",
           "options": {
-            "devServerTarget": "demo:serve",
+            "devServerTarget": "support-ticket-frontend:serve",
             "watch": true,
             "headless": false
           },
           "configurations": {
             "production": {
-              "devServerTarget": "demo:serve:production"
+              "devServerTarget": "support-ticket-frontend:serve:production"
             }
           }
         },
