@@ -1,13 +1,31 @@
-**/node_modules/
-**/.git
-**/.gitignore
-**/.vscode
-**/.editorconfig
+#Ignorer les dossiers et fichiers de développement
+/node_modules
+.git
+.gitignore
+.vscode
+npm-debug.log
+yarn-debug.log
+yarn-error.log*
+
+#Ignorer les fichiers de build (ils seront générés par le Dockerfile)
+dist
+.angular
+.cache
+coverage
+
+#Ignorer les fichiers de test
 **/karma.conf.js
-**/eslint.config.mts
-**/cypress.config.ts
 **/test.ts
-**/polyfills.ts
-**/.angular
-**/.github
-**/cypress/
+**/src/test.ts
+cypress
+cypress.config.ts
+
+#Ignorer les fichiers de configuration spécifiques aux outils de développement
+.editorconfig
+eslint.config.mts
+
+#Ignorer les fichiers README et de documentation
+README.md
+
+#Fichiers à ne pas envoyer au contexte de build
+**/Dockerfile
