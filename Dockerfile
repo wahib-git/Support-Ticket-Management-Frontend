@@ -6,13 +6,13 @@ COPY package*.json ./
 
 RUN npm install 
 
-COPY . .
+COPY angular.json tsconfig*.json ./
+
+COPY src ./src
 
 RUN npm run build:prod
 
 FROM nginx:alpine
-
-COPY default.conf /etc/nginx/conf.d
 
 COPY --from=build /app/dist/support-ticket-frontend/browser /usr/share/nginx/html
 
