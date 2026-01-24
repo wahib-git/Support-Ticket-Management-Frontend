@@ -1,6 +1,17 @@
 # Support Ticket Management System
+[![Frontend CI](https://github.com/wahib-bachoua/Support-Ticket-Management-Frontend/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/wahib-bachoua/Support-Ticket-Management-Frontend/actions/workflows/ci.yml)
+[![Backend CI](https://github.com/wahib-bachoua/Support-Ticket-Management-System/actions/workflows/ci.yml/badge.svg)](https://github.com/wahib-bachoua/Support-Ticket-Management-System/actions/workflows/ci.yml)
 
-This project is a **Support Ticket Management System** built with Angular using standalone components. It provides a platform for managing support tickets efficiently, with features like ticket categorization, priority management, and user authentication.
+---
+
+## 🏗️ Architecture du Projet
+
+Ce projet utilise une architecture découplée. Ce dépôt concerne uniquement le **Frontend**. 
+
+* **Dépôt Frontend :** `C'est ce dépôt` (Angular 19)
+* **Dépôt Backend :** [Accéder au Repository Backend 🔗](https://github.com/wahib-bachoua/Support-Ticket-Management-System.git) (API GraphQL & Base de données)
+
+This Frontend is built with Angular using standalone components. It provides a platform for managing support tickets efficiently, with features like ticket categorization, priority management, and user authentication.
 
 ## Features
 
@@ -16,7 +27,7 @@ This project is a **Support Ticket Management System** built with Angular using 
 - **Priority and Status Badges**: Visual indicators for ticket priority and status.
 - **User Management**: Admins can manage user accounts and roles.
 
-## Architecture
+## Architecture du frontend
 
 This project leverages Angular's **standalone components** for a modular and simplified architecture. Key differences include:
 
